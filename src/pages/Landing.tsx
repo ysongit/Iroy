@@ -2,6 +2,7 @@ import React from 'react';
 
 import Hero from '../assets/hero.png';
 import NavigationBar from '../components/NavigationBar';
+import FeatureCard from '../components/FeatureCard';
 
 const Landing: React.FC = () => {
   return (
@@ -42,6 +43,26 @@ const Landing: React.FC = () => {
           </button>
         </div>
       </header>
+
+      <div className="container mx-auto pb-8">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-10 text-center md:text-left">
+          OWN YOUR:
+        </h1>
+
+        {/* Intellectual Properties Card */}
+        <FeatureCard
+          title="Intellectual Properties"
+          description1="Review AI-detected violations, request takedowns, manage your intellectual property assets, and gain clear insights into how your IP is being copied, remixed, or reused across the internet."
+          description2="Decide which cases to allow or block, and when you're ready, confidently delegate decisions to the AI for seamless enforcement."
+        />
+
+        {/* Digital Platform Card */}
+        <FeatureCard
+          title="Digital Platform"
+          description1="Monitor AI-flagged violations, initiate takedown requests, and manage your digital platform assets, all from a single interface. Track exactly how your digital platform content is copied, remixed, or reused across the web. "
+          description2="Choose which cases to approve or block, and when ready, confidently hand over control to the AI to handle enforcement effortlessly."
+        />
+      </div>
     </div>
   );
 };
