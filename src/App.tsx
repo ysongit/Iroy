@@ -3,13 +3,14 @@ import '@tomo-inc/tomo-evm-kit/styles.css';
 
 import ConnectButton from './components/ConnectButton';
 import { Web3Providers } from './lib/providers';
+import Landing from './pages/Landing';
 
 function App() {
   return (
     <Web3Providers>
       <TomoEVMKitProvider>
         <div>
-          <h1>Iroy</h1>
+          <Landing />
           <ConnectButton />
         </div>
       </TomoEVMKitProvider>
