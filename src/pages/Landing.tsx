@@ -3,6 +3,7 @@ import React from 'react';
 import Hero from '../assets/hero.png';
 import NavigationBar from '../components/NavigationBar';
 import FeatureCard from '../components/FeatureCard';
+import BackedByTheBestSection from '../components/BackedByTheBestSection';
 
 const Landing: React.FC = () => {
   return (
@@ -63,6 +64,8 @@ const Landing: React.FC = () => {
           description2="Choose which cases to approve or block, and when ready, confidently hand over control to the AI to handle enforcement effortlessly."
         />
       </div>
+
+      <BackedByTheBestSection />
     </div>
   );
 };

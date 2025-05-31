@@ -1,4 +1,6 @@
 import { Buffer } from 'buffer';
+
+// @ts-ignore
 import React, { ReactNode } from 'react';
 import { WagmiProvider } from 'wagmi';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
