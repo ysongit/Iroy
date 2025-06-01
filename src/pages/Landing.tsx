@@ -2,6 +2,7 @@ import React from 'react';
 
 import Hero from '../assets/hero.png';
 import NavigationBar from '../components/NavigationBar';
+import Footer from '../components/Footer';
 import FeatureCard from '../components/FeatureCard';
 import BackedByTheBestSection from '../components/BackedByTheBestSection';
 
@@ -66,6 +67,8 @@ const Landing: React.FC = () => {
       </div>
 
       <BackedByTheBestSection />
+
+      <Footer />
     </div>
   );
 };

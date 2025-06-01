@@ -1,6 +1,9 @@
+import { useConnectModal } from '@tomo-inc/tomo-evm-kit';
 import Logo from '../assets/logo.png';
 
 function NavigationBar() {
+  const { openConnectModal } = useConnectModal();
+
   return (
     <nav className="container m-auto pt-6">
       <div className="p-4 flex items-center justify-between bg-[#FFFFFF30] border border-solid border-[#FFFFFF40] rounded-[14px]">
@@ -46,7 +49,7 @@ function NavigationBar() {
 
         {/* Auth and CTA buttons */}
         <div className="flex items-center space-x-4">
-          <button className="hidden md:block px-4 py-2 rounded-md hover:bg-gray-700 transition-colors duration-200 cursor-pointer">
+          <button className="hidden md:block px-4 py-2 rounded-md hover:bg-gray-700 transition-colors duration-200 cursor-pointer" onClick={openConnectModal}>
             Login
           </button>
           <button className="px-4 py-2 bg-white hover:bg-gray-300 text-[#070707] rounded-[30px] shadow-lg flex items-center space-x-2 transition-colors duration-200 cursor-pointer">
