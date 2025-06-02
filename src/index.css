@@ -1,1 +1,33 @@
 @import "tailwindcss";
+
+/* 1. Define the keyframes for the continuous scroll */
+@keyframes scroll-animation {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); } /* Moves one full "original" set of logos to the left */
+}
+
+/* 2. Define the main class that applies the animation and its immediate layout */
+.logo-strip-animated-wrapper {
+  display: flex;
+  align-items: center;
+  white-space: nowrap; /* Prevents logos from wrapping to the next line */
+  /* This is crucial: make the div twice as wide as the visible area
+     so the duplicated content can scroll seamlessly. */
+  min-width: 200%;
+  animation: scroll-animation 30s linear infinite; /* Adjust duration (e.g., 30s) for speed */
+  will-change: transform; /* Performance hint for browsers */
+}
+
+/* Media queries for responsive padding, if fully ditching Tailwind layout classes */
+@media (min-width: 640px) { /* Tailwind's 'sm' breakpoint */
+  .section-content-wrapper-pure-css {
+    padding-left: 1.5rem; /* Equivalent to sm:px-6 */
+    padding-right: 1.5rem; /* Equivalent to sm:px-6 */
+  }
+}
+@media (min-width: 1024px) { /* Tailwind's 'lg' breakpoint */
+  .section-content-wrapper-pure-css {
+    padding-left: 2rem; /* Equivalent to lg:px-8 */
+    padding-right: 2rem; /* Equivalent to lg:px-8 */
+  }
+}
