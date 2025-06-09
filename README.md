@@ -1,10 +1,10 @@
 # Iroy: AI-Powered IP Audit & Protection Assistant
 
 ## Smart contract
-- IroyIPRegistry: 0x00D34db8Cd945B28b25431ef18Bc8223C76a316c
-- IroyAuditEngine: 0x212F9E219CF82d1aE32A33DEac382Bc12EA6607D
-- Network: storyTestnet
-- Deployer: 0x32f2708Cf129a1979Ed36D64188e005C46F97300
+- **IroyIPRegistry**: 0x00D34db8Cd945B28b25431ef18Bc8223C76a316c
+- **IroyAuditEngine**: 0x212F9E219CF82d1aE32A33DEac382Bc12EA6607D
+- **Network**: StoryTestnet
+- **Deployer**: 0x32f2708Cf129a1979Ed36D64188e005C46F97300
 
 ## Project Overview
 
