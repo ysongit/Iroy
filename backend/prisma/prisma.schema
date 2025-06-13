@@ -1,0 +1,47 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+    id           String @id @default(uuid())         
+    email        String @unique
+    username     String @unique
+    password     String
+    walletAdress String @unique
+    content      Content[] @relation(name: "owner")
+
+         
+}
+
+model Content {
+  id          String      @id @default(uuid())
+  ownerId     String
+  owner       User        @relation(fields: [ownerId], references: [id])
+  contentHash String
+  rawContent  String
+  type        ContentType
+  createdAt   DateTime    @default(now())
+  audit       AuditResult?
+}
+
+model AuditResult {
+  id              String   @id @default(uuid())
+  contentId       String   @unique
+  content         Content  @relation(fields: [contentId], references: [id])
+  similarityScore Float
+  aiComment       String
+  createdAt       DateTime @default(now())
+  verifiedBy      String[] // e.g., ["Yakoa", "Gaia"]
+}
+enum ContentType {
+  TEXT
+  IMAGE
+  VIDEO
+  AUDIO
+}
