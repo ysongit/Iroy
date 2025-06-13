@@ -1,7 +1,7 @@
-Iroy IP Audit System - Technical Documentation
+# Iroy IP Audit System - Technical Documentation
 ============================================
 
-1. Story Protocol Integration
+## Story Protocol Integration
 ----------------------------
 The system integrates with Story Protocol to enable comprehensive IP management and cross-chain compatibility.
 
@@ -32,7 +32,7 @@ contract IroyIPRegistry {
 }
 ```
 
-2. C2PA Integration
+## C2PA Integration
 ------------------
 The Content Credentials Protocol (C2PA) is implemented for content authenticity verification and provenance tracking.
 
@@ -83,7 +83,7 @@ contract C2PAService {
 }
 ```
 
-3. Combined Implementation
+## Combined Implementation
 -------------------------
 The system combines Story Protocol and C2PA to create a comprehensive IP audit system.
 
@@ -124,7 +124,7 @@ contract IroyAuditEngine {
 }
 ```
 
-4. Security Features
+## Security Features
 -------------------
 The system implements multiple security measures to ensure safe and reliable operation.
 
@@ -156,7 +156,7 @@ contract C2PAService {
 }
 ```
 
-5. Integration Flow
+## Integration Flow
 ------------------
 The system follows a structured flow for content verification and IP management.
 
