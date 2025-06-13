@@ -4,50 +4,62 @@ SmartContracts Developed by Vilansh, vilansh@gmail.com
 
 1. Story Protocol Integration
 ----------------------------
-The system integrates with Story Protocol to enable comprehensive IP management and cross-chain compatibility.
+The system integrates with Story Protocol's IP Asset API and Attestation Service for comprehensive IP management and cross-chain compatibility.
 
 Implementation Details:
-- Story Protocol address integration in IroyIPRegistry
+- Story Protocol IP Asset API integration for asset registration and management
+- Story Attestation Service integration for IP rights verification
 - Mapping of IP assets to Story Protocol IDs
 - Cross-chain IP management capabilities
 
 Key Features:
-- IP asset registration with Story Protocol
-- Ownership tracking
-- Licensing management
+- IP asset registration and management through Story Protocol API
+- Ownership tracking and verification
+- Licensing management with attestation support
 - Cross-chain compatibility
+- Automated attestation verification
 
 Code Implementation:
 ```solidity
 contract IroyIPRegistry {
     address public storyProtocolAddress;
+    address public storyAttestationService;
     mapping(uint256 => uint256) private _storyProtocolIds;
+    mapping(uint256 => bytes32) private _attestationIds;
 
     function integrateWithStoryProtocol(
         uint256 ipAssetId,
-        uint256 storyProtocolId
+        uint256 storyProtocolId,
+        bytes32 attestationId
     ) external onlyAuthorizedAuditor validIPAsset(ipAssetId) {
         _ipAssets[ipAssetId].storyProtocolId = storyProtocolId;
-        emit StoryProtocolIntegrated(ipAssetId, storyProtocolId);
+        _ipAssets[ipAssetId].attestationId = attestationId;
+        emit StoryProtocolIntegrated(ipAssetId, storyProtocolId, attestationId);
+    }
+
+    function verifyAttestation(bytes32 attestationId) external view returns (bool) {
+        return IStoryAttestation(storyAttestationService).verifyAttestation(attestationId);
     }
 }
 ```
 
 2. C2PA Integration
 ------------------
-The Content Credentials Protocol (C2PA) is implemented for content authenticity verification and provenance tracking.
+The Content Credentials Protocol (C2PA) is implemented for content authenticity verification and provenance tracking, following the industry-standard specifications.
 
 Implementation Details:
-- C2PA claim verification
-- Content authenticity checks
-- AI-generated content detection
-- Provenance tracking
-
-Key Features:
-- Content authenticity verification
-- Provenance tracking
+- C2PA claim verification following official specifications
+- Content authenticity checks with provenance metadata
 - AI-generated content detection
 - Secure signature verification
+- Full support for C2PA manifest and claim structures
+
+Key Features:
+- Content authenticity verification using C2PA standards
+- Comprehensive provenance tracking
+- AI-generated content detection
+- Secure signature verification
+- Support for multiple C2PA claim types
 
 Code Implementation:
 ```solidity
@@ -58,15 +70,19 @@ contract C2PAService {
         string signature;
         uint256 timestamp;
         bool isValid;
+        bytes manifestData;
+        string[] assertions;
     }
 
     function verifyContent(
         bytes memory content,
-        string memory signature
+        string memory signature,
+        bytes memory manifestData
     ) external returns (bool) {
         C2PAVerifier.VerificationResult memory result = C2PAVerifier.verifyContent(
             content,
-            signature
+            signature,
+            manifestData
         );
         
         if (result.isValid) {
@@ -75,7 +91,9 @@ contract C2PAService {
                 generator: result.generator,
                 signature: signature,
                 timestamp: block.timestamp,
-                isValid: true
+                isValid: true,
+                manifestData: manifestData,
+                assertions: result.assertions
             }));
         }
         
@@ -84,80 +102,181 @@ contract C2PAService {
 }
 ```
 
-3. Combined Implementation
+3. Yakoa Integration
+-------------------
+Integration with Yakoa's IP metadata and matching API for enhanced IP protection and matching capabilities.
+
+Implementation Details:
+- Yakoa API integration for IP metadata management
+- Content matching and similarity detection
+- Automated IP infringement detection
+- Metadata enrichment
+
+Key Features:
+- IP metadata management
+- Content similarity detection
+- Automated infringement monitoring
+- Metadata enrichment and validation
+
+Code Implementation:
+```solidity
+contract YakoaIntegration {
+    address public yakoaAPI;
+    
+    struct YakoaMetadata {
+        string contentId;
+        string[] tags;
+        uint256 similarityScore;
+        bool isInfringing;
+    }
+
+    function checkContentSimilarity(
+        string memory contentHash
+    ) external returns (YakoaMetadata memory) {
+        return IYakoaAPI(yakoaAPI).checkSimilarity(contentHash);
+    }
+}
+```
+
+4. Tomo Wallet SDK Integration
+-----------------------------
+Integration with Tomo Wallet SDK for enhanced wallet functionality and transaction management.
+
+Implementation Details:
+- TomoEVMKit integration
+- Custom transaction handling
+- Enhanced wallet security
+- Cross-chain transaction support
+
+Key Features:
+- Secure wallet integration
+- Custom transaction management
+- Cross-chain compatibility
+- Enhanced security features
+
+Code Implementation:
+```solidity
+contract TomoWalletIntegration {
+    using TomoEVMKit for address;
+    
+    function executeSecureTransaction(
+        address target,
+        bytes memory data,
+        uint256 value
+    ) external returns (bool) {
+        return target.executeSecureTransaction(data, value);
+    }
+}
+```
+
+5. Gaia AI Agent Integration
+---------------------------
+Integration with Gaia AI Agent for enhanced content analysis and verification.
+
+Implementation Details:
+- Snap-integrated analysis support
+- AI-powered content verification
+- Automated content analysis
+- Enhanced detection capabilities
+
+Key Features:
+- AI-powered content analysis
+- Automated verification
+- Enhanced detection capabilities
+- Snap integration support
+
+Code Implementation:
+```solidity
+contract GaiaAIIntegration {
+    address public gaiaAIAgent;
+    
+    function analyzeContent(
+        bytes memory content,
+        string memory contentType
+    ) external returns (bool) {
+        return IGaiaAI(gaiaAIAgent).analyzeContent(content, contentType);
+    }
+}
+```
+
+6. Combined Implementation
 -------------------------
-The system combines Story Protocol and C2PA to create a comprehensive IP audit system.
+The system combines all integrations to create a comprehensive IP audit system.
 
 Implementation Details:
 - Integrated verification process
 - Automated audit system
 - Transparent audit trail
 - Cross-chain compatibility
+- Multi-layer security
 
 Key Features:
-- Combined C2PA and Story Protocol checks
-- Automated verification process
+- Combined verification from all services
+- Automated audit process
 - Transparent audit trail
 - Cross-chain IP management
+- Enhanced security measures
 
 Code Implementation:
 ```solidity
 contract IroyAuditEngine {
     function auditContent(
         string memory contentHash,
-        string memory c2paSignature
+        string memory c2paSignature,
+        bytes memory manifestData
     ) external returns (bool) {
+        // C2PA Verification
         bool isAuthentic = c2paService.verifyContent(
             abi.encodePacked(contentHash),
-            c2paSignature
+            c2paSignature,
+            manifestData
         );
         
         if (isAuthentic) {
+            // Story Protocol Integration
             uint256 storyProtocolId = storyProtocol.registerIP(contentHash);
-            ipRegistry.integrateWithStoryProtocol(
-                _getIPAssetId(contentHash),
-                storyProtocolId
-            );
+            bytes32 attestationId = storyProtocol.createAttestation(contentHash);
+            
+            // Yakoa Similarity Check
+            YakoaMetadata memory metadata = yakoaIntegration.checkContentSimilarity(contentHash);
+            
+            // Gaia AI Analysis
+            bool aiAnalysis = gaiaAI.analyzeContent(abi.encodePacked(contentHash), "text");
+            
+            if (!metadata.isInfringing && aiAnalysis) {
+                ipRegistry.integrateWithStoryProtocol(
+                    _getIPAssetId(contentHash),
+                    storyProtocolId,
+                    attestationId
+                );
+                return true;
+            }
         }
         
-        return isAuthentic;
+        return false;
     }
 }
 ```
 
-4. Security Features
+7. Security Features
 -------------------
 The system implements multiple security measures to ensure safe and reliable operation.
 
 Implementation Details:
-- Verification cooldown periods
+- Multi-layer verification
 - Access control
 - Rate limiting
 - Secure signature verification
+- Cross-chain security
 
 Key Features:
 - Protection against replay attacks
 - Access control for authorized users
 - Rate limiting for verifications
 - Secure signature handling
+- Cross-chain security measures
 
-Code Implementation:
-```solidity
-contract C2PAService {
-    mapping(bytes32 => uint256) private lastVerified;
-    uint256 public verificationCooldown;
-    
-    modifier notRecentlyVerified(bytes32 contentHash) {
-        require(
-            block.timestamp >= lastVerified[contentHash] + verificationCooldown,
-            "Content recently verified"
-        );
-        _;
-    }
-}
-```
-
-5. Integration Flow
+8. Integration Flow
 ------------------
 The system follows a structured flow for content verification and IP management.
 
@@ -165,73 +284,81 @@ Process Steps:
 1. Content Submission
    - Content is submitted with C2PA signature
    - Initial validation checks
+   - Gaia AI analysis
 
 2. Content Verification
    - C2PA signature verification
    - Content authenticity check
    - AI generation detection
+   - Yakoa similarity check
 
 3. IP Registration
    - Story Protocol integration
    - IP rights registration
+   - Attestation creation
    - Cross-chain compatibility setup
 
 4. Audit Trail Creation
    - Verification results recording
    - IP registration confirmation
    - Timestamp and metadata storage
+   - Cross-chain transaction recording
 
 5. IP Management
    - Ownership tracking
    - Licensing management
    - Cross-chain operations
+   - Automated monitoring
 
-6. Technical Benefits
+9. Technical Benefits
 --------------------
 The implementation provides several technical advantages:
 
 1. Content Authenticity
-   - Reliable content verification
+   - Multi-layer verification
    - Provenance tracking
-   - AI generation detection
+   - AI-powered analysis
+   - Similarity detection
 
 2. IP Management
    - Comprehensive rights management
    - Cross-chain compatibility
-   - Licensing control
+   - Automated monitoring
+   - Enhanced security
 
 3. Security
-   - Protected verification process
+   - Multi-layer protection
    - Access control
    - Rate limiting
+   - Cross-chain security
 
 4. Scalability
    - Cross-chain operations
    - Modular design
    - Extensible architecture
+   - Automated processing
 
-7. Future Enhancements
----------------------
+10. Future Enhancements
+----------------------
 Potential areas for future development:
 
-1. Enhanced C2PA Integration
-   - Additional signature types
+1. Enhanced Integrations
+   - Additional API features
    - Extended verification methods
    - Advanced AI detection
-
-2. Story Protocol Features
-   - Additional IP management tools
    - Enhanced cross-chain capabilities
-   - Advanced licensing options
 
-3. Security Improvements
+2. Security Improvements
    - Advanced access control
    - Enhanced rate limiting
    - Additional security measures
+   - Cross-chain security enhancements
 
-4. Scalability Enhancements
+3. Scalability Enhancements
    - Optimized gas usage
    - Enhanced cross-chain operations
    - Improved modularity
+   - Automated scaling
+
 SmartContracts by Vilansh, vilansh@gmail.com
-This implementation provides a robust foundation for IP management and content verification, combining the strengths of Story Protocol and C2PA to create a comprehensive and secure system. 
+This implementation provides a robust foundation for IP management and content verification, combining multiple services to create a comprehensive and secure system. 
