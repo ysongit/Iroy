@@ -1,3 +1,13 @@
+<p align="center">
+<img src="" alt="Logo" width="100" height="100">
+</p>
+
+<h1 align="center">IROY</h1>
+
+<p align="center">
+  <a href="https://iroy.netlify.app/" style="color: #a77dff">IROY</a> | <a href="" style="color: #a77dff">Demo Video</a> | <a href="https://www.figma.com/deck/cAYmSnQxE71SLP2WBbBtNo" style="color: #a77dff">Pitchdeck</a> | <a href="https://github.com/ysongit/Iroy/tree/main/smart_contracts" style="color: #a77dff">Smart Contract</a> | <a href="https://github.com/ysongit/Iroy/blob/main/smart_contracts/documentation.txt" style="color: #a77dff">Tech docs</a>
+</p>
+
 # Iroy: AI-Powered IP Audit & Protection Assistant
 
 ## Tech doc
