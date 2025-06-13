@@ -1,17 +1,12 @@
 <p align="center">
-<img src="" alt="Logo" width="100" height="100">
+<img src="https://github.com/user-attachments/assets/b8b824a4-1356-427d-b19d-bfcbbfe2e62b" alt="Logo" width="350" height="100">
 </p>
-
-<h1 align="center">IROY</h1>
 
 <p align="center">
   <a href="https://iroy.netlify.app/" style="color: #a77dff">IROY</a> | <a href="" style="color: #a77dff">Demo Video</a> | <a href="https://www.figma.com/deck/cAYmSnQxE71SLP2WBbBtNo" style="color: #a77dff">Pitchdeck</a> | <a href="https://github.com/ysongit/Iroy/tree/main/smart_contracts" style="color: #a77dff">Smart Contract</a> | <a href="https://github.com/ysongit/Iroy/blob/main/smart_contracts/documentation.txt" style="color: #a77dff">Tech docs</a>
 </p>
 
-# Iroy: AI-Powered IP Audit & Protection Assistant
-
-## Tech doc
-### [Story Protocol](https://github.com/ysongit/Iroy/blob/main/smart_contracts/documentation.txt) 
+<h2 align="center">AI-Powered IP Audit & Protection Assistant</h2>
 
 ## Smart contract deployed 
 - **IroyIPRegistry**: [0x71336a8D1E667d1752E77848edaf0B51AE4c8F05](https://aeneid.storyscan.io/address/0x71336a8D1E667d1752E77848edaf0B51AE4c8F05)
