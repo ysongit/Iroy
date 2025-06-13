@@ -3,10 +3,10 @@
 #### [Story Protocol](https://github.com/ysongit/Iroy/blob/main/Tech%20docs.md) 
 
 ## Smart contract
-- **IroyIPRegistry**: [0x00D34db8Cd945B28b25431ef18Bc8223C76a316c](https://aeneid.storyscan.io/address/0x00D34db8Cd945B28b25431ef18Bc8223C76a316c)
-- **IroyAuditEngine**: [0x212F9E219CF82d1aE32A33DEac382Bc12EA6607D](https://aeneid.storyscan.io/address/0x212F9E219CF82d1aE32A33DEac382Bc12EA6607D)
+- **IroyIPRegistry**: [0x71336a8D1E667d1752E77848edaf0B51AE4c8F05](https://aeneid.storyscan.io/address/0x71336a8D1E667d1752E77848edaf0B51AE4c8F05)
+- **IroyAuditEngine**: [0x0022aB73E07E99b23A297B5A44e56F86dd9F4707](https://aeneid.storyscan.io/address/0x0022aB73E07E99b23A297B5A44e56F86dd9F4707)
 - **Network**: StoryTestnet
-- **Deployer**: [0x32f2708Cf129a1979Ed36D64188e005C46F97300](https://aeneid.storyscan.io/address/0x32f2708Cf129a1979Ed36D64188e005C46F97300?tab=index)
+- **IroyAttestationManager**: [0x21Fa3C87E3175a2Ea4EfAa93de491b1A9B21c589](https://aeneid.storyscan.io/address/0x21Fa3C87E3175a2Ea4EfAa93de491b1A9B21c589)
 
 ## Project Overview
 
