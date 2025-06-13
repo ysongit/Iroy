@@ -72,7 +72,7 @@ Despite the ease of generating creative works with AI tools, several issues rema
 | Extensibility | Internal use only | API/Snap enables wide integration |
 
 ## How to use tech
-### Story Protocol and C2PA:
+### [Story Protocol and C2PA](https://github.com/ysongit/Iroy/blob/main/Tech%20docs.md):
 
 Iroy seamlessly integrates Story Protocol and C2PA (Content Credentials Protocol) to establish a comprehensive ecosystem for intellectual property (IP) protection and content authenticity verification. C2PA enables verification of metadata such as the creator, timestamp, and AI-generated status of content using cryptographic signatures. Iroy leverages this to verify the authenticity of user-submitted content and detect any tampering or manipulation. Once verified, the results are securely stored and used as trusted evidence for IP registration.
 
