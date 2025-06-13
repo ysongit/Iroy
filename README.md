@@ -1,5 +1,6 @@
 # Iroy: AI-Powered IP Audit & Protection Assistant
 
+## Tech doc
 ### [Story Protocol](https://github.com/ysongit/Iroy/blob/main/Tech%20docs.md) 
 
 ## Smart contract deployed 
@@ -70,6 +71,15 @@ Despite the ease of generating creative works with AI tools, several issues rema
 | IP Registration | Manual | Auto registration with audit attached |
 | Extensibility | Internal use only | API/Snap enables wide integration |
 
+## How to use tech
+### Story Protocol and C2PA:
+
+Iroy seamlessly integrates Story Protocol and C2PA (Content Credentials Protocol) to establish a comprehensive ecosystem for intellectual property (IP) protection and content authenticity verification. C2PA enables verification of metadata such as the creator, timestamp, and AI-generated status of content using cryptographic signatures. Iroy leverages this to verify the authenticity of user-submitted content and detect any tampering or manipulation. Once verified, the results are securely stored and used as trusted evidence for IP registration.
+
+Verified content is then automatically registered as an IP asset via the IroyIPRegistry smart contract, which is connected to Story Protocol. The content is mapped to a unique Story Protocol ID, enabling cross-chain ownership tracking and licensing management. In other words, once content passes C2PA verification, Iroy links it to Story Protocol, allowing it to be managed and traded as a decentralized IP asset.
+
+This integration goes beyond simple verification by automating and securing the entire lifecycle of IP—from creation and validation to registration and tracking. For users, this means they can experience detailed AI-powered content audits and instant IP registration via Story Protocol in a single seamless process, ensuring both ease of use and high reliability.
+
 ## User Flow
 
 ### [A] Web-Based Dashboard
@@ -102,8 +112,8 @@ User Content Upload
 [Audit Report Generation]
 - Includes similarity scores and matched IPs
        │
-   ├──> User reviews and registers via Story Protocol
-   └──> Summary modal shown in Snap/Wallet
+       ├──> User reviews and registers via Story Protocol
+       └──> Summary modal shown in Snap/Wallet
 
 ```
 
