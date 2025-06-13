@@ -1,0 +1,10 @@
+{
+  "network": "storyTestnet",
+  "deployer": "0x32f2708Cf129a1979Ed36D64188e005C46F97300",
+  "contracts": {
+    "schemaRegistry": "0xcd45e2686A4739C2D6B138961cEdfB858fE35463",
+    "eas": "0x527D67cCE9Ac9F1Be6ad8337e9b111A2a51fCDDe"
+  },
+  "timestamp": "2025-06-10T11:20:20.092Z",
+  "schemaId": "0xd9f76444fbee5203881a4d23e3acd0ec477f93a0e5fa5ff1a32d9260b7f0c49c"
+}
