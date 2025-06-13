@@ -1,0 +1,4 @@
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/ai_agent_db"
+YAKOA_API_KEY=your-yakoa-api-key
+GAIA_ENDPOINT=https://api.gaia.local
