@@ -1,5 +1,7 @@
 # Iroy: AI-Powered IP Audit & Protection Assistant
 
+#### [Story Protocol](https://github.com/ysongit/Iroy/blob/main/Tech%20docs.md) 
+
 ## Smart contract
 - **IroyIPRegistry**: [0x00D34db8Cd945B28b25431ef18Bc8223C76a316c](https://aeneid.storyscan.io/address/0x00D34db8Cd945B28b25431ef18Bc8223C76a316c)
 - **IroyAuditEngine**: [0x212F9E219CF82d1aE32A33DEac382Bc12EA6607D](https://aeneid.storyscan.io/address/0x212F9E219CF82d1aE32A33DEac382Bc12EA6607D)
