@@ -1,5 +1,6 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 import Hero from '../assets/hero.png';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
@@ -7,6 +8,13 @@ import FeatureCard from '../components/FeatureCard';
 import BackedByTheBestSection from '../components/BackedByTheBestSection';
 
 const Landing: React.FC = () => {
+  const { address} = useAccount();
+  const changePage = useNavigate();
+
+  useEffect(() => {
+    if (address) changePage("/dashboard");
+  }, [address])
+  
   return (
     <div className="min-h-screen bg-[#030322] text-white font-inter">
       <NavigationBar />

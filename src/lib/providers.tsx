@@ -5,7 +5,7 @@ import React, { ReactNode } from 'react';
 import { WagmiProvider } from 'wagmi';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { getDefaultConfig } from '@tomo-inc/tomo-evm-kit';
-import { mainnet, polygon, optimism, arbitrum, base } from 'wagmi/chains';
+import { aeneid } from './aeneid';
 
 declare global {
   interface Window {
@@ -20,10 +20,10 @@ if (typeof window !== 'undefined') {
 const queryClient = new QueryClient();
 
 const wagmiConfig = getDefaultConfig({
-  clientId: '', // Replace with your clientId
+  clientId: 'LlIN2x0SOiWI5ZiNPYzBxh3RmeGAPZaTpJdChsgqP3M2MiRTTdwkm5VITDxSdmhNXKOWuXVrIjwWHjbZBjmwGoar', // Replace with your clientId
   appName: 'My TomoEVMKit App',
-  projectId: '', // Note: Every dApp that relies on WalletConnect now needs to obtain a projectId from WalletConnect Cloud.
-  chains: [mainnet, polygon, optimism, arbitrum, base],
+  projectId: 'e745d508df941ca8e1704642d31e913f', // Note: Every dApp that relies on WalletConnect now needs to obtain a projectId from WalletConnect Cloud.
+  chains: [aeneid],
   ssr: false, // If your dApp uses server-side rendering (SSR)
 });
 
