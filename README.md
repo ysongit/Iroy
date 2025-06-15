@@ -97,6 +97,9 @@ Yakoa plays a key role in the Iroy system by performing content similarity check
 
 This feature allows Iroy to go beyond authenticity verification, enabling automatic detection of duplicates, plagiarism, or licensing violations. If the similarity score is high or if the content is flagged as infringing, the system automatically suspends the registration process and notifies the creator.
 
+### [Tomo]():
+Tomo Wallet SDK for secure wallet functionality and cross-chain transaction support.
+
 ## User Flow
 
 ### [A] Web-Based Dashboard
