@@ -5,6 +5,7 @@ import '@tomo-inc/tomo-evm-kit/styles.css';
 import { Web3Providers } from './lib/providers';
 import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
+import Summary from './pages/Summary';
 
 function App() {
   return (
@@ -12,6 +13,9 @@ function App() {
       <TomoEVMKitProvider>
         <HashRouter>
           <Routes>
+            <Route
+              path="/summary"
+              element={<Summary />} />
             <Route
               path="/dashboard"
               element={<Dashboard />} />

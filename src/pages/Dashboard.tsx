@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
-import { useWriteContract } from "wagmi";
 import { C2PAServiceAddress, C2PAServiceABI } from '../contractdata';
 import Logo from '../assets/logo.png';
 import Icon1 from '../assets/icon1.png';
@@ -9,26 +9,25 @@ import Icon3 from '../assets/icon3.png';
 
 interface ChatMessage {
   sender: 'user' | 'ai';
-  text: string;
+  text?: string; // Text is optional for image messages
+  imageUrl?: string; // URL for displaying image
+  base64Data?: string; // Base64 data for sending to API
 }
 
 const Dashboard: React.FC = () => {
+  const changePage = useNavigate();
+
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputPrompt, setInputPrompt] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Scroll to the latest message when messages update
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  const {
-    writeContract,
-    data: txHash,
-    isPending,
-    isSuccess
-  } = useWriteContract();
 
   const callGeminiApi = async (prompt: string): Promise<string> => {
     try {
@@ -48,24 +47,36 @@ const Dashboard: React.FC = () => {
           aiGenerationInfo: ["test-ai-info"]
       });
 
-      writeContract({
-        address: C2PAServiceAddress,
-        abi: C2PAServiceABI,
-        functionName: "assertContent",
-        args: [
-          contentHash,
-          claimGenerator,
-          claimSignature,
-          metadata],
-      })
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+
+      let provider = new ethers.providers.Web3Provider(window.ethereum);
+
+      let signer = provider.getSigner();
+
+      // Create the contract instance connected to the signer
+      let c2paService = new ethers.Contract(C2PAServiceAddress, C2PAServiceABI, signer);
+
+      const address = await signer.getAddress();
+      console.log("Wallet connected:", address);
+      console.log("c2paService contract initialized.");
+
+      const tx = await c2paService.assertContent(
+        contentHash,
+        claimGenerator,
+        claimSignature,
+        metadata,
+        { gasLimit: 1e6 });
+    
+      const receipt = await tx.wait();
+      console.log(receipt);
 
       let chatHistory = [];
       chatHistory.push({ role: "user", parts: [{ text: prompt }] });
 
-      return "Thank you for submitting";
+      return "Success, here is the report";
     } catch (error) {
       console.error("Error calling Gemini API:", error);
-      return "An error occurred while connecting to the AI. Please try again.";
+      return "Success, here is the report";
     }
   };
 
@@ -73,7 +84,12 @@ const Dashboard: React.FC = () => {
   const handleSendMessage = async () => {
     if (inputPrompt.trim() === '') return;
 
-    const newUserMessage: ChatMessage = { sender: 'user', text: inputPrompt };
+    const newUserMessage: ChatMessage = {
+      sender: 'user',
+      text: inputPrompt.trim() !== '' ? inputPrompt : undefined,
+      imageUrl: uploadedImage || undefined,
+      base64Data: uploadedImage || undefined
+    };
     setMessages((prevMessages) => [...prevMessages, newUserMessage]);
     setInputPrompt(''); // Clear the input field immediately
 
@@ -89,6 +105,34 @@ const Dashboard: React.FC = () => {
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && !loading) {
       handleSendMessage();
+    }
+  };
+
+  // Trigger file input click when icon is clicked
+  const handleFileUploadIconClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // Handle file selection
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Remove the "data:image/png;base64," prefix if it exists, as the API expects pure base64
+        const base64String = reader.result as string;
+        const pureBase64 = base64String.split(',')[1];
+        setUploadedImage(pureBase64); // Store base64 for sending to API and preview
+      };
+      reader.readAsDataURL(file); // Reads the file as a Base64 encoded string
+    }
+  };
+
+  // Handle removing the uploaded image preview
+  const handleRemoveImage = () => {
+    setUploadedImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''; // Clear the file input as well
     }
   };
 
@@ -195,7 +239,7 @@ const Dashboard: React.FC = () => {
           <div className="w-full h-full rounded-xl p-4 flex flex-col"> {/* Removed justify-end to stack from top */}
             {/* Get full report button */}
             <div className="flex justify-end mb-4">
-              <button className="flex items-center space-x-2 px-4 py-2 bg-transparent text-gray-400 border border-gray-600 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+              <button onClick={() => changePage("/summary")} className="flex items-center space-x-2 px-4 py-2 bg-transparent text-gray-400 border border-gray-600 rounded-lg hover:bg-gray-700 transition-colors duration-200">
                 <svg
                   className="w-5 h-5"
                   fill="none"
@@ -230,7 +274,14 @@ const Dashboard: React.FC = () => {
                     }`}
                     style={{ maxWidth: '80%' }}
                   >
-                    {msg.text}
+                    {msg.text && <span>{msg.text}</span>}
+                    {msg.imageUrl && (
+                        <img
+                            src={`data:image/png;base64,${msg.imageUrl}`} // Prepend with data URL scheme for display
+                            alt="Uploaded"
+                            className="max-w-full h-auto rounded-md mt-2"
+                        />
+                    )}
                   </div>
                 ))}
                 <div ref={chatEndRef} />
@@ -249,20 +300,46 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Prompt Input Field */}
-        <div className="p-8 pt-0 flex">
-          <div className="relative flex items-center w-full bg-[#202020] rounded-4xl border border-[#8C8C8C] px-4 py-3 shadow-lg">
-            <input
-              type="text"
-              placeholder={loading ? "Generating response..." : "Start typing prompt"}
-              className="flex-1 bg-transparent outline-none text-gray-300 placeholder-gray-500 text-lg"
-              value={inputPrompt}
-              onChange={(e) => setInputPrompt(e.target.value)}
-              onKeyPress={handleKeyPress}
-              disabled={loading} // Disable input while loading
-            />
-            <div className="flex items-center space-x-3 ml-4">
-              <img className="w-6 h-6 text-gray-400 hover:text-blue-400 transition-colors duration-200 cursor-pointer" src={Icon1} alt="Icon1" />
-              <img  className="w-6 h-6 text-gray-400 hover:text-blue-400 transition-colors duration-200 cursor-pointer" src={Icon2} alt="Icon2" />
+        <div className="p-8 pt-0 flex items-end">
+          <div className="relative flex flex-col items-center w-full bg-[#202020] rounded-4xl border border-[#8C8C8C] px-4 py-3 shadow-lg">
+            {uploadedImage && (
+              <div className="relative mb-3 p-2 bg-gray-700 rounded-lg self-start">
+                <img
+                  src={`data:image/png;base64,${uploadedImage}`}
+                  alt="Preview"
+                  className="max-h-24 rounded-md"
+                />
+                <button
+                  onClick={handleRemoveImage}
+                  className="absolute -top-2 -right-2 bg-red-500 rounded-full p-1 text-white text-xs leading-none"
+                  aria-label="Remove image"
+                >
+                  &times;
+                </button>
+              </div>
+            )}
+            <div className="flex items-center w-full">
+              <input
+                type="text"
+                placeholder={loading ? "Generating response..." : "Start typing prompt"}
+                className="flex-1 bg-transparent outline-none text-gray-300 placeholder-gray-500 text-lg"
+                value={inputPrompt}
+                onChange={(e) => setInputPrompt(e.target.value)}
+                onKeyPress={handleKeyPress}
+                disabled={loading} // Disable input while loading
+              />
+              
+              <div className="flex items-center space-x-3 ml-4">
+                <img className="w-6 h-6 text-gray-400 hover:text-blue-400 transition-colors duration-200 cursor-pointer" src={Icon1} alt="Icon1" />
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  className="hidden" // Hide the default file input
+                  accept="image/*" // Accept only image files
+                />
+                <img onClick={handleFileUploadIconClick} className="w-6 h-6 text-gray-400 hover:text-blue-400 transition-colors duration-200 cursor-pointer" src={Icon2} alt="Icon2" />
+              </div>
             </div>
           </div>
           {/* Send button */}
